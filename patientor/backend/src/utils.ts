@@ -1,13 +1,5 @@
 import { z } from 'zod';
-import { Diagnosis, EntryWithoutId, Gender, HealthCheckRating } from './types';
-
-export const NewPatientSchema = z.object({
-  name: z.string().min(1),
-  dateOfBirth: z.string().date(),
-  ssn: z.string().min(1),
-  gender: z.nativeEnum(Gender),
-  occupation: z.string().min(1),
-});
+import { HealthCheckRating, type Diagnosis, type EntryWithoutId } from './types.ts';
 
 const parseDiagnosisCodes = (object: unknown): Array<Diagnosis['code']> => {
   if (!object || typeof object !== 'object' || !('diagnosisCodes' in object)) {
@@ -19,13 +11,13 @@ const parseDiagnosisCodes = (object: unknown): Array<Diagnosis['code']> => {
 
 const BaseEntrySchema = z.object({
   description: z.string().min(1),
-  date: z.string().date(),
+  date: z.iso.date(),
   specialist: z.string().min(1),
 });
 
 const HealthCheckEntrySchema = BaseEntrySchema.extend({
   type: z.literal('HealthCheck'),
-  healthCheckRating: z.nativeEnum(HealthCheckRating),
+  healthCheckRating: z.enum(HealthCheckRating),
 });
 
 const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({
@@ -33,8 +25,8 @@ const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({
   employerName: z.string().min(1),
   sickLeave: z
     .object({
-      startDate: z.string().date(),
-      endDate: z.string().date(),
+      startDate: z.iso.date(),
+      endDate: z.iso.date(),
     })
     .optional(),
 });
@@ -42,7 +34,7 @@ const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({
 const HospitalEntrySchema = BaseEntrySchema.extend({
   type: z.literal('Hospital'),
   discharge: z.object({
-    date: z.string().date(),
+    date: z.iso.date(),
     criteria: z.string().min(1),
   }),
 });

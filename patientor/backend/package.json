@@ -2,12 +2,13 @@
   "name": "patientor-backend",
   "version": "1.0.0",
   "description": "Backend for the Patientor app, Full Stack Open part 9",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/index.ts",
   "scripts": {
     "tsc": "tsc",
-    "dev": "ts-node-dev src/index.ts",
-    "lint": "eslint .",
-    "start": "ts-node-dev --transpile-only src/index.ts"
+    "dev": "concurrently \"tsc --watch\" \"node --watch src/index.ts\"",
+    "start": "node src/index.ts",
+    "lint": "eslint ."
   },
   "author": "Kirill Novikov",
   "license": "MIT",
@@ -15,7 +16,7 @@
     "cors": "^2.8.6",
     "express": "^5.3.0",
     "uuid": "^14.0.3",
-    "zod": "^3.25.76"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -23,8 +24,8 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.5",
+    "concurrently": "^10.0.7",
     "eslint": "^10.12.0",
-    "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.71.2"
   }

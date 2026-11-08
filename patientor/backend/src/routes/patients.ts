@@ -1,8 +1,8 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express, { type NextFunction, type Request, type Response } from 'express';
 import { z } from 'zod';
-import patientService from '../services/patientService';
-import { NewPatientSchema, toNewEntry } from '../utils';
-import { Entry, NewPatient, NonSensitivePatient, Patient } from '../types';
+import patientService from '../services/patientService.ts';
+import { toNewEntry } from '../utils.ts';
+import { NewPatientSchema, type Entry, type NewPatient, type NonSensitivePatient, type Patient } from '../types.ts';
 
 const router = express.Router();
 

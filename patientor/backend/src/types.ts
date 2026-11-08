@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { NewPatientSchema } from './utils';
 
 export interface Diagnosis {
   code: string;
@@ -7,11 +6,22 @@ export interface Diagnosis {
   latin?: string;
 }
 
-export enum Gender {
-  Male = 'male',
-  Female = 'female',
-  Other = 'other',
-}
+export const Gender = {
+  Male: 'male',
+  Female: 'female',
+  Other: 'other',
+} as const;
+
+export type Gender = typeof Gender[keyof typeof Gender];
+
+export const HealthCheckRating = {
+  Healthy: 0,
+  LowRisk: 1,
+  HighRisk: 2,
+  CriticalRisk: 3,
+} as const;
+
+export type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
 
 interface BaseEntry {
   id: string;
@@ -19,13 +29,6 @@ interface BaseEntry {
   date: string;
   specialist: string;
   diagnosisCodes?: Array<Diagnosis['code']>;
-}
-
-export enum HealthCheckRating {
-  'Healthy' = 0,
-  'LowRisk' = 1,
-  'HighRisk' = 2,
-  'CriticalRisk' = 3,
 }
 
 export interface HealthCheckEntry extends BaseEntry {
@@ -56,16 +59,19 @@ type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit
 
 export type EntryWithoutId = UnionOmit<Entry, 'id'>;
 
-export interface Patient {
+export const NewPatientSchema = z.object({
+  name: z.string().min(1),
+  dateOfBirth: z.iso.date(),
+  ssn: z.string().min(1),
+  gender: z.enum(Gender),
+  occupation: z.string().min(1),
+});
+
+export type NewPatient = z.infer<typeof NewPatientSchema>;
+
+export interface Patient extends NewPatient {
   id: string;
-  name: string;
-  dateOfBirth: string;
-  ssn: string;
-  gender: Gender;
-  occupation: string;
   entries: Entry[];
 }
 
 export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
-
-export type NewPatient = z.infer<typeof NewPatientSchema>;
