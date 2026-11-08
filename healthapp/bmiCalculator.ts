@@ -1,4 +1,4 @@
-import { isNotNumber } from './utils';
+import { isNotNumber } from './utils.ts';
 
 export const calculateBmi = (height: number, weight: number): string => {
   if (height <= 0 || weight <= 0) {
@@ -27,7 +27,7 @@ const parseArguments = (args: string[]): { height: number; weight: number } => {
   };
 };
 
-if (require.main === module) {
+if (process.argv[1] === import.meta.filename) {
   try {
     const { height, weight } = parseArguments(process.argv);
     console.log(calculateBmi(height, weight));

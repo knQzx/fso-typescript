@@ -1,7 +1,7 @@
 import express from 'express';
-import { calculateBmi } from './bmiCalculator';
-import { calculateExercises } from './exerciseCalculator';
-import { isNotNumber } from './utils';
+import { calculateBmi } from './bmiCalculator.ts';
+import { calculateExercises } from './exerciseCalculator.ts';
+import { isNotNumber } from './utils.ts';
 
 const app = express();
 app.use(express.json());

@@ -1,4 +1,4 @@
-import { isNotNumber } from './utils';
+import { isNotNumber } from './utils.ts';
 
 interface Result {
   periodLength: number;
@@ -48,7 +48,7 @@ const parseArguments = (args: string[]): { target: number; dailyHours: number[] 
   };
 };
 
-if (require.main === module) {
+if (process.argv[1] === import.meta.filename) {
   try {
     const { target, dailyHours } = parseArguments(process.argv);
     console.log(calculateExercises(dailyHours, target));
